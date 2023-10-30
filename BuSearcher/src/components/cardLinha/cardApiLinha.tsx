@@ -4,7 +4,7 @@ export interface LinhaData {
     cl: number,
     lt: string, 
     tp: string,
-    ts: string
+    ts: string,
 }
 
 export function CardApiLinha({ cl, lt, tp, ts } : LinhaData) {

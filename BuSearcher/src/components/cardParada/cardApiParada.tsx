@@ -4,7 +4,8 @@ export interface LinhaParada {
     np: number,
     ed: string, 
     py: number,
-    px: number
+    px: number,
+    numberCount: number
 }
 
 export function CardApiParada({ np, ed, py, px } : LinhaParada) {
