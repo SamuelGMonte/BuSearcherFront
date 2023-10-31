@@ -1,7 +1,7 @@
-import { useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import './App.css'
 import React from 'react';
-import { ChakraProvider } from '@chakra-ui/react'
+import { ChakraProvider, position } from '@chakra-ui/react'
 import { CardApiLinha } from './components/cardLinha/cardApiLinha.tsx'
 import { CardApiParada } from './components/cardParada/cardApiParada.tsx'
 import { useApiDataNumber } from './hooks/useApiDataNumber.ts';
@@ -15,8 +15,17 @@ function App() {
   const [termosBusca, setTermosBusca] = useState('');
   const { data: numberData, isLoading: numberIsLoading, isError: numberIsError, error: numberError } = useApiDataNumber(parseInt(param, 10));
   const { data: nameData, isLoading: nameIsLoading, isError: nameIsError, error: nameError } = useApiDataName(termosBusca);
-  const [paradas, setParadas] = React.useState<LinhaParada[]>([]);
-  var contador = 0;
+  const [mapCoordinates, setMapCoordinates] = useState<[number, number]>([0, 0]);
+  const [lat, setLat] = useState<number | null>(null);
+  const [long, setLong] = useState<number | null>(null);
+
+
+  const updateMapCenter = (latitude: number, longitude: number) => {
+    console.log(`Clicado no card! Latitude: ${latitude}, Longitude: ${longitude}`);
+    setLat(latitude)
+    setLong(longitude)
+  };
+
   const handleChangeNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
     setParam(e.target.value);
   };
@@ -25,24 +34,9 @@ function App() {
     setTermosBusca(e.target.value);
   };
 
-  const atualizarMapa = (latitude: number, longitude: number) => {
-    setParadas((paradas) => {
-      contador++;
-      const novasParadas = [...paradas];
-      if (contador < novasParadas.length) {
-        novasParadas[contador] = { ...novasParadas[contador], px: longitude, py: latitude };
-      }
-      return novasParadas;
-    });
-  };
-
-
 
   return (
     <ChakraProvider>
-
-  
-
   <div className="container">
 
     <div className="busca">
@@ -97,13 +91,13 @@ function App() {
                 <p>Erro: {nameError instanceof Error ? nameError.message : "Um erro ocorreu."}</p>
               ) : (
                 nameData?.map((apiDataNome) => (
-                  <div onClick={() => atualizarMapa(paradas[contador].py, paradas[contador].px)}>
+                  <div key={apiDataNome.py} onClick={() => updateMapCenter(apiDataNome.py, apiDataNome.px)}>
                   <CardApiParada 
-                  np={apiDataNome.np} 
-                  ed={apiDataNome.ed} 
-                  py={apiDataNome.py}
-                  px={apiDataNome.px}
-                  numberCount={apiDataNome.numberCount}
+                    np={apiDataNome.np}
+                    ed={apiDataNome.ed}
+                    py={apiDataNome.py}
+                    px={apiDataNome.px}
+                   
                   />
                   </div>
                   
@@ -115,8 +109,8 @@ function App() {
           <h1>Mapa</h1>
           {termosBusca && nameData ? (
             <div className="map-container">
-              <MapWithMarker paradas={nameData} />
-            </div>
+            <MapWithMarker paradas={nameData} lat={lat} long={long} />
+          </div>
           ): null}
                 
           </div>
