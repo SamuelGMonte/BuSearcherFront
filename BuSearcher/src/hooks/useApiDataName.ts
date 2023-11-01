@@ -1,5 +1,5 @@
 import { useQuery } from 'react-query'; 
-import { LinhaParada } from '../components/cardParada/LinhaParada';
+import { LinhaParada } from "../components/cardParada/cardApiParada";
 const API_URL = 'http://localhost:8080/parada';
 
 const fetchDataName = async (termosBusca: string): Promise<LinhaParada[]> => {
