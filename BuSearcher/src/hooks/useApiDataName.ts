@@ -25,8 +25,13 @@ export function useApiDataName(termosBusca: string) {
         retry: 2,
       });
 
+    const dataWithPxAndPy = query.data as LinhaParada[];
+
+
     return{
         ...query,
         data: query.data,
+        px: dataWithPxAndPy.map((item) => item.px),
+        py: dataWithPxAndPy.map((item) => item.py),
     }
 }

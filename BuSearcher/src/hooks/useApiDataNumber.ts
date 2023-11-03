@@ -29,5 +29,6 @@ export function useApiDataNumber(param: number) {
     return{
         ...query,
         data: query.data,
+        
     }
 }

@@ -6,26 +6,25 @@ import { CardApiLinha } from './components/cardLinha/cardApiLinha.tsx'
 import { CardApiParada } from './components/cardParada/cardApiParada.tsx'
 import { useApiDataNumber } from './hooks/useApiDataNumber.ts';
 import { useApiDataName } from './hooks/useApiDataName.ts';
-import  MapWithMarker  from './components/mapa/showMap.tsx'
+import ShowMap from './components/mapa/showMap.tsx'
 import { LinhaParada } from './components/cardParada/cardApiParada.tsx';
 import 'leaflet/dist/leaflet.css';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import { FlyMapTo } from './hooks/FlyMapTo.tsx';
+import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
+import { MapComponent } from './hooks/MapComponent.tsx'
 
 function App() {
   const [param, setParam] = useState('');
   const [termosBusca, setTermosBusca] = useState('');
-
   const { data: numberData, isLoading: numberIsLoading, isError: numberIsError, error: numberError } = useApiDataNumber(parseInt(param, 10));
-  const { data: nameData, isLoading: nameIsLoading, isError: nameIsError, error: nameError } = useApiDataName(termosBusca);
-  const [latitude, setLatitude] = useState(0);
-  const [longitude, setLongitude] = useState(0);
-  const [coordinates, setCoords] = useState<number[]>([0, 0]);
-  
-  const handleCardClick = (newLatitude: number, newLongitude: number) => {
-    setLatitude(newLatitude);
-    setLongitude(newLongitude);
-  };
+  const { data: nameData, isLoading: nameIsLoading, isError: nameIsError, error: nameError} = useApiDataName(termosBusca);
+  const { px: longitude, py: latitude } = useApiDataName('');
+  const pyArray: number[] = latitude;
+  const pxArray: number[] = longitude
+
+  const teste: LinhaParada[] = pyArray.map((py, index) => ({
+    py,
+    px: pxArray[index],
+  }));
 
   const handleChangeNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
     setParam(e.target.value);
@@ -35,9 +34,10 @@ function App() {
     setTermosBusca(e.target.value);
   };
 
- 
+  MapComponent
+
   return (
-    <ChakraProvider>
+  <ChakraProvider>
   <div className="container">
 
     <div className="busca">
@@ -62,9 +62,7 @@ function App() {
       </div>
     </div>
 
-    
-
-        <div className="row">
+       
 
           <div className="card-grid">
             {param ? (
@@ -84,44 +82,46 @@ function App() {
             )
             ): null}     
         </div>
-        <div className="card-grid">
-            {termosBusca ? (
-              nameIsLoading ? (
-                <p>Carregando...</p>
-              ) : nameIsError ? (
-                <p>Erro: {nameError instanceof Error ? nameError.message : "Um erro ocorreu."}</p>
-              ) : (
-                nameData?.map((apiDataNome, index) => (
-                  <div key={index}>
-                  <CardApiParada 
-                    np={apiDataNome.np}
-                    ed={apiDataNome.ed}
-                    py={apiDataNome.py}
-                    px={apiDataNome.px}
-                    onCardClick={() => handleCardClick(apiDataNome.py, apiDataNome.px)}
-                    />
+        
+          <div className="card-grid">
+          {termosBusca ? (
+            nameIsLoading ? (
+              <p>Carregando...</p>
+            ) : nameIsError ? (
+              <p>Erro: {nameError instanceof Error ? nameError.message : "Um erro ocorreu."}</p>
+            ) : (
+              nameData?.map((apiDataNome, index) => (
+                <div key={index}>
                   
-                  </div>
-                
-                ))
-              
-                )
-            ): null}
-      
+                    <CardApiParada
+                      np={apiDataNome.np}
+                      ed={apiDataNome.ed}
+                      py={apiDataNome.py}
+                      px={apiDataNome.px}
+                    />
+                   
+                </div>
+              ))
+              )
+              ) : null}
           
+              
+            
+
+          </div>
+
+      
+          {/* <div className="map-container-nome">
+            {nameData ? (
+            ) : null}
+          </div> */}
+     
+  
           <h1>Mapa</h1>
           
-          
-          {termosBusca && nameData ? (
-             <div className="map-container">
-               <MapContainer center={[latitude, longitude]} zoom={13} style={{ height: '500px', width: '500px' }}>
-                <MapWithMarker paradas={nameData} center={[latitude, longitude]} coordinates={[latitude, longitude]} />
-              </MapContainer>
-            </div>
-          ): null}
-          </div>
-        </div>
-      </div>
+        
+         
+  </div>
     </ChakraProvider>
      
 

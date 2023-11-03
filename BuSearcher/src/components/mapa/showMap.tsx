@@ -1,12 +1,11 @@
-import React from 'react';
 import { Marker, Popup } from 'react-leaflet';
 
-export default function MapWithMarker({ coordinates }: any) {
+export default function MapWithMarker( {latitude, longitude} : any) {
   return (
     <div>
-      <Marker position={coordinates}>
+      <Marker position={[latitude, longitude]}>
         <Popup>
-          {coordinates}
+          {[latitude, longitude]}
         </Popup>
       </Marker>
     </div>
