@@ -16,7 +16,14 @@ const fetchDataName = async (termosBusca: string): Promise<LinhaParada[]> => {
     catch(error: any) {
         throw new Error(`Error while fetching data: ${error.message}`);
     }
-    return response.json();
+    const data = await response.json();
+    
+    const pxAndPyData = data.map((item: any) => ({
+        px: item.px,
+        py: item.py,
+    }));
+
+    return pxAndPyData
 }
 
 export function useApiDataName(termosBusca: string) {
@@ -25,13 +32,11 @@ export function useApiDataName(termosBusca: string) {
         retry: 2,
       });
 
-    const dataWithPxAndPy = query.data as LinhaParada[];
-
 
     return{
         ...query,
         data: query.data,
-        px: dataWithPxAndPy.map((item) => item.px),
-        py: dataWithPxAndPy.map((item) => item.py),
+        px: query.data ? query.data.map((item: any) => item.px) : [],
+        py: query.data ? query.data.map((item: any) => item.py) : [],
     }
 }

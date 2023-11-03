@@ -1,6 +1,6 @@
 import { Marker, Popup } from 'react-leaflet';
 
-export default function MapWithMarker( {latitude, longitude} : any) {
+export default function ShowMap( {latitude, longitude} : any) {
   return (
     <div>
       <Marker position={[latitude, longitude]}>

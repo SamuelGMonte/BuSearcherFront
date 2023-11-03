@@ -4,18 +4,31 @@
   flex-direction: column;
 }
 
+
+
+
 .card {
-  position: fixed;
-  left: 50%;
-  top: 10%;
-  width: auto;
-  margin-top: 200px;
-  
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.card-grid {
-  margin: 2px;
-  padding: 10px;
+
+
+.leaflet-container {
+  position: absolute;
+  width: 50%;
+  height: 100vh;
+
+}
+
+
+.card-grid2 {
+  position: relative;
+  width: 100%;
+  left: 50%;
+  top: 100%;
 }
 
 .container button:hover {
@@ -25,22 +38,25 @@
 
 .busca {
   display: flex;
-  
+  margin: 2px;
 }
 
 .buscaCampo {
-  margin: 2px;
   text-align: center;
   border: 1px solid #000;
   padding: 10px;
   flex: 1;
 }
 
-.buscaCampo > h1 {
+.buscaCampo h1 {
   font-size: 30px;
 }
 
 .buscaCampo input {
   font-size: 25px;
   text-align: center;
+}
+
+.card-grid2 {
+  margin: 2px;
 }
