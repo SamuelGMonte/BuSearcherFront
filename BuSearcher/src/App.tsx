@@ -12,12 +12,15 @@ import 'leaflet/dist/leaflet.css';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import { MapComponent } from './hooks/MapComponent.tsx'
 import ShowMapOnly from './components/mapa/showMapOnly.tsx';
+import { Map } from 'leaflet';
+import { CardList } from './components/cardParada/CardList.tsx';
 
 function App() {
   const [param, setParam] = useState('');
   const [termosBusca, setTermosBusca] = useState('');
-  const { data: numberData, isLoading: numberIsLoading, isError: numberIsError, error: numberError } = useApiDataNumber(parseInt(param, 10));
+  // const { data: numberData, isLoading: numberIsLoading, isError: numberIsError, error: numberError } = useApiDataNumber(parseInt(param, 10));
   const { data: nameData, isLoading: nameIsLoading, isError: nameIsError, error: nameError} = useApiDataName(termosBusca);
+  // const handleCardClick = useZoom();
   // const { px: longitude, py: latitude } = useApiDataName('');
   // const pyArray: number[] = latitude;
   // const pxArray: number[] = longitude
@@ -69,7 +72,7 @@ function App() {
 
        
 
-          <div className="card-grid1">
+          {/* <div className="card-grid1">
             {param ? (
             numberIsLoading ? (
               <p>Carregando...</p>
@@ -86,46 +89,44 @@ function App() {
               ))
             )
             ): null}     
-        </div>
+        </div> */}
         
-          <div className="card-grid2">
-          <MapComponent>
-          {termosBusca ? (
-            nameIsLoading ? (
-              <p>Carregando...</p>
-            ) : nameIsError ? (
-              <p>Erro: {nameError instanceof Error ? nameError.message : "Um erro ocorreu."}</p>
-            ) : (
-              
-              nameData?.map((apiDataNome, index) => (
-                 
-                    <CardApiParada 
-                      key={index}
-                      np={apiDataNome.np}
-                      ed={apiDataNome.ed}
-                      py={apiDataNome.py}
-                      px={apiDataNome.px}
-                    />
-                    
-              ))
-              )
-              ) : null}
-            </MapComponent>
+        <div className="card-grid2">
+        {termosBusca ? (
+          nameIsLoading ? (
+            <p>Carregando...</p>
+          ) : nameIsError ? (
+            <p>Erro: {nameError instanceof Error ? nameError.message : "Um erro ocorreu."}</p>
+          ) : (
+  
+            nameData?.map(({ np, ed, py, px }) => (
+              <CardApiParada
+                key={np} 
+                np={np}
+                ed={ed}
+                py={py}
+                px={px}
+              />
+            ))
+          )
+        ) : null}
+      </div>
+
+
+
+
+        
+     
+            <div className="map-container">
+            <MapComponent />
+
             </div>
-
-         
-        
-
-      
-          {/* <div className="map-container-nome">
-            {nameData ? (
-            ) : null}
-          </div> */}
+      </div>
+  
      
   
           <h1>Mapa</h1>
-          
-          </div>
+
          
     </ChakraProvider>
      

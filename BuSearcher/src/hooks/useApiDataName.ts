@@ -36,7 +36,7 @@ export function useApiDataName(termosBusca: string) {
     return{
         ...query,
         data: query.data,
-        px: query.data ? query.data.map((item: any) => item.px) : [],
-        py: query.data ? query.data.map((item: any) => item.py) : [],
+        px: query.data ? query.data.map((item: LinhaParada) => item.px) : [],
+        py: query.data ? query.data.map((item: LinhaParada) => item.py) : [],
     }
 }

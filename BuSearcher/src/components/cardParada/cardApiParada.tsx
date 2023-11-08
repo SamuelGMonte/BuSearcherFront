@@ -1,35 +1,31 @@
+import { MapComponent } from '../../hooks/MapComponent';
 import './cardParada.css'
 import { MapContainer, TileLayer, useMap } from 'react-leaflet';
+import { useZoom } from '../../hooks/zoom'
 
 export interface LinhaParada {
     np: number,
     ed: string, 
     py: number,
     px: number,
-    onCardClick?: (latitude: number, longitude: number) => void;
     map?: any;
 }
 
+// export interface CardApiParadaProps {
+//   handleCardClick: (px: number, py: number) => void;
+// }
 
-export function CardApiParada({ np, ed, py, px, onCardClick } : LinhaParada): any {
+export function CardApiParada({ np, ed, py, px } : LinhaParada) {
 
-    const map = useMap(); 
 
-    const handleCardClick = () => {
-        if (map) {
-          map.flyTo([py, px], 18);
-        }
-        if (onCardClick) {
-          onCardClick(px, py);
-        }
-      };
 
-    return (
-        <div className="card" onClick={handleCardClick}>
-            <h2>Nome da parada {np}</h2>
-            <p><b>Endereço de localização da parada </b>{ed}</p>
-            <p><b>Latitude da localização da parada </b>{py}</p>
-            <p><b>Longitude da localização da parada </b>{px}</p>
-        </div>
-    );
+  return (
+      <div className="card" >
+          <h2>Nome da parada {np}</h2>
+          <p><b>Endereço de localização da parada </b>{ed}</p>
+          <p><b>Latitude da localização da parada </b>{py}</p>
+          <p><b>Longitude da localização da parada </b>{px}</p>
+      </div>
+    
+  );
   }
