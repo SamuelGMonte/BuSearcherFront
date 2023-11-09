@@ -2,23 +2,27 @@ import { useEffect, useState, useRef } from 'react'
 import './App.css'
 import React from 'react';
 import { ChakraProvider, position } from '@chakra-ui/react'
-import { CardApiParada } from './components/cardParada/cardApiParada.tsx'
-import { useApiDataName } from './hooks/useApiDataName.ts';
+import { CardApiParada, LinhaDataLinhaParada, LinhaParada } from './components/cardParada/cardApiParada.tsx'
+import { CardApiLinha, LinhaData } from './components/cardLinha/cardApiLinha.tsx';
+import { useApiDataName } from './hooks/linhaParadaRequest/useApiDataName.ts';
+import { useApiDataNumber } from './hooks/nomeParadaRequest/useApiDataNumber.ts';
 import 'leaflet/dist/leaflet.css';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import { MapSaver } from './hooks/MapSaver.tsx';
-import { px } from 'framer-motion';
 
 
 function App() {
   const [param, setParam] = useState('');
   const [termosBusca, setTermosBusca] = useState('');
-  // const { data: numberData, isLoading: numberIsLoading, isError: numberIsError, error: numberError } = useApiDataNumber(parseInt(param, 10));
+  const { data: numberData, isLoading: numberIsLoading, isError: numberIsError, error: numberError } = useApiDataNumber(parseInt(param, 10));
   const { data: nameData, isLoading: nameIsLoading, isError: nameIsError, error: nameError} = useApiDataName(termosBusca);
   // const { px: longitude, py: latitude } = useApiDataName('');
   // const pyArray: number[] = latitude;
   // const pxArray: number[] = longitude
   const [map, setMap] = useState('');
+  
+
+  const combinedData: (LinhaParada | LinhaData)[] = [nameData, numberData].flat();
 
   // const teste: LinhaParada[] = pyArray.map((py, index) => ({
   //   ed: '',
@@ -37,7 +41,7 @@ function App() {
     setTermosBusca(e.target.value);
   };
 
-  
+
 
   return (
   <ChakraProvider>
@@ -62,29 +66,31 @@ function App() {
           onChange={handleChangeName}
           placeholder="Coloque o nome da linha: "
         />
+
+
+        
       </div>
     </div>
 
-       
-
-          {/* <div className="card-grid1">
+          <div className="card-grid1">
             {param ? (
             numberIsLoading ? (
               <p>Carregando...</p>
             ) : numberIsError ? (
               <p>Erro: {numberError instanceof Error ? numberError.message : "Um erro ocorreu."}</p>
             ) : (
-              numberData?.map((apiDataLinha) => (
+              numberData?.map(({cl, lt, tp, ts}, index) => (
                 <CardApiLinha 
-                cl={apiDataLinha.cl}
-                lt={apiDataLinha.lt} 
-                ts={apiDataLinha.ts} 
-                tp={apiDataLinha.tp}
+                key={index}
+                cl={cl}
+                lt={lt} 
+                ts={ts} 
+                tp={tp}
                 />
               ))
             )
             ): null}     
-        </div> */}
+        </div>
         
         
         <div className="card-grid2">
@@ -106,8 +112,12 @@ function App() {
           ) : nameIsError ? (
             <p>Erro: {nameError instanceof Error ? nameError.message : "Um erro ocorreu."}</p>
           ) : (
-            nameData?.map(({ np, ed, py, px }, index) => (
+            flattenedData?.map(({ np, ed, py, px, cl, lt, tp, ts }, index) => (
               <CardApiParada
+                cl={cl}
+                lt={lt}
+                tp={tp}
+                ts={ts}
                 key={index} 
                 np={np}
                 ed={ed}
