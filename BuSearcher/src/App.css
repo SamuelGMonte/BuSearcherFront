@@ -1,25 +1,28 @@
+.container {
+  height: 100%;
+}
+
 body {
   padding: 0;
   margin: 0;
 }
 
-.container { 
-  position: relative;
-  width: 100%;
-}
-
-
 .card {
   position: relative;
+  border: solid 3px black;
+  background-color: antiquewhite;
+  border-radius: 10px;
+  transition: background-color 0.3s linear;
 }
-
 
 
 .card-grid2 {
-  position: relative;
-  flex-direction: column;
-  display: flex;
-  justify-content: right;
+  position: absolute;
+  left: 50%;
+}
+
+.card:hover {
+  background-color: rgb(255, 255, 255);
 }
 
 .container button:hover {
@@ -49,15 +52,9 @@ body {
 }
 
 
-.map-container {
-  position: relative;
-  height: 600px; 
+.leaflet-container {
   display: flex;
   justify-content: right;
-}
-
-.leaflet-container {
-  position: absolute;
   height: 600px;
   width: 600px;
 }

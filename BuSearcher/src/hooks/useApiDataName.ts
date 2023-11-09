@@ -18,12 +18,14 @@ const fetchDataName = async (termosBusca: string): Promise<LinhaParada[]> => {
     }
     const data = await response.json();
     
-    const pxAndPyData = data.map((item: any) => ({
+    const coordData = data.map((item: any) => ({
+        ed: item.ed,
+        np: item.np,
         px: item.px,
         py: item.py,
     }));
 
-    return pxAndPyData
+    return coordData
 }
 
 export function useApiDataName(termosBusca: string) {
@@ -36,6 +38,8 @@ export function useApiDataName(termosBusca: string) {
     return{
         ...query,
         data: query.data,
+        ed: query.data ? query.data.map((item: LinhaParada) => item.ed) : [],
+        np: query.data ? query.data.map((item: LinhaParada) => item.np) : [],
         px: query.data ? query.data.map((item: LinhaParada) => item.px) : [],
         py: query.data ? query.data.map((item: LinhaParada) => item.py) : [],
     }

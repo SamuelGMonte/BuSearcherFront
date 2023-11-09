@@ -2,28 +2,23 @@ import { useEffect, useState, useRef } from 'react'
 import './App.css'
 import React from 'react';
 import { ChakraProvider, position } from '@chakra-ui/react'
-import { CardApiLinha } from './components/cardLinha/cardApiLinha.tsx'
 import { CardApiParada } from './components/cardParada/cardApiParada.tsx'
-import { useApiDataNumber } from './hooks/useApiDataNumber.ts';
 import { useApiDataName } from './hooks/useApiDataName.ts';
-import ShowMap from './components/mapa/showMap.tsx'
-import { LinhaParada } from './components/cardParada/cardApiParada.tsx';
 import 'leaflet/dist/leaflet.css';
-import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
-import { MapComponent } from './hooks/MapComponent.tsx'
-import ShowMapOnly from './components/mapa/showMapOnly.tsx';
-import { Map } from 'leaflet';
-import { CardList } from './components/cardParada/CardList.tsx';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapSaver } from './hooks/MapSaver.tsx';
+import { px } from 'framer-motion';
+
 
 function App() {
   const [param, setParam] = useState('');
   const [termosBusca, setTermosBusca] = useState('');
   // const { data: numberData, isLoading: numberIsLoading, isError: numberIsError, error: numberError } = useApiDataNumber(parseInt(param, 10));
   const { data: nameData, isLoading: nameIsLoading, isError: nameIsError, error: nameError} = useApiDataName(termosBusca);
-  // const handleCardClick = useZoom();
   // const { px: longitude, py: latitude } = useApiDataName('');
   // const pyArray: number[] = latitude;
   // const pxArray: number[] = longitude
+  const [map, setMap] = useState('');
 
   // const teste: LinhaParada[] = pyArray.map((py, index) => ({
   //   ed: '',
@@ -46,7 +41,7 @@ function App() {
 
   return (
   <ChakraProvider>
-  <div className="container">
+  <section className="container">
 
     <div className="busca">
       <div className="buscaCampo">
@@ -91,41 +86,46 @@ function App() {
             ): null}     
         </div> */}
         
+        
         <div className="card-grid2">
+        <MapContainer center={[0, 0]} zoom={1}>
+            <MapSaver setMap={setMap} /> 
+            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+            {nameData?.map((item, index) =>
+              <Marker key={index} position={[item.py, item.px]}>
+                <Popup>
+                {item.np}
+                </Popup>
+              </Marker>
+            )}
+        </MapContainer>
+        
         {termosBusca ? (
           nameIsLoading ? (
             <p>Carregando...</p>
           ) : nameIsError ? (
             <p>Erro: {nameError instanceof Error ? nameError.message : "Um erro ocorreu."}</p>
           ) : (
-  
-            nameData?.map(({ np, ed, py, px }) => (
+            nameData?.map(({ np, ed, py, px }, index) => (
               <CardApiParada
-                key={np} 
+                key={index} 
                 np={np}
                 ed={ed}
                 py={py}
                 px={px}
+                map={map}
               />
             ))
           )
         ) : null}
-      </div>
-
-
-
-
         
-     
-            <div className="map-container">
-            <MapComponent />
-
-            </div>
       </div>
+
+          <h1>Mapa</h1>
+      </section>
   
      
   
-          <h1>Mapa</h1>
 
          
     </ChakraProvider>
