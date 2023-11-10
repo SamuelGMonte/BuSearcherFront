@@ -1,18 +1,29 @@
 import './cardHora.css';
 
-export interface Veiculo {
+export interface ApiResponse {
+  hr: string;
+  l: LinhaInfo[];
+}
+
+export interface LinhaInfo {
+  c: string;
+  cl: number;
+  sl: number;
+  lt0: string;
+  lt1: string;
+  qv: number;
+  vs: VeiculoStatus[];
+}
+
+export interface VeiculoStatus {
+  p: number;
+  a: boolean;
   ta: string;
   py: number;
   px: number;
 }
 
-export interface Posicao {
-  ta: any;
-  hr: string;
-  vs: Veiculo[];
-}
-
-export function CardApiHora({ posicao }: { posicao: Posicao }) {
+export function CardApiHora({ posicao }: { posicao: ApiResponse & LinhaInfo}) {
   return (
     <div className="card">
       <h2>Hora: {posicao.hr}</h2>

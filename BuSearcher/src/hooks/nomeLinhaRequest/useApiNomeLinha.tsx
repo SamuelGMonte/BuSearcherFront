@@ -1,6 +1,5 @@
-import { LinhaData } from "../../components/cardLinha/cardApiLinha";
+import { LinhaData } from "../../components/LinhaData";
 import { useQuery } from 'react-query'; 
-import { LinhaDataLinhaParada } from "../../components/cardParada/cardApiParada";
 const API_URL = 'http://localhost:8080/linhas';
 
 
