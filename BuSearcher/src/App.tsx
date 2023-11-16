@@ -5,25 +5,41 @@ import { ChakraProvider, position } from '@chakra-ui/react'
 import { CardApiParada, LinhaParada } from './components/cardParada/cardApiParada.tsx'
 import 'leaflet/dist/leaflet.css';
 import { useApiDataName } from './hooks/nomeParadaRequest/useApiDataName.ts'
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, Circle } from 'react-leaflet';
 import { MapSaver } from './hooks/MapSaver.tsx';
 import { useApiDataNameHour } from './hooks/horaOnibusRequest/useApiHour.ts'
 import * as L from 'leaflet';
-import { MarkerClusterGroup, MarkerClusterGroupOptions } from 'leaflet';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 
 function App() {
   const [termosBusca, setTermosBusca] = useState('');
+  const [slice, setSlice] = useState(0)
   const { data: nameData, isLoading: nameIsLoading, isError: nameIsError, error: nameError} = useApiDataName(termosBusca);
   const { data: dataHour } = useApiDataNameHour();
   const [map, setMap] = useState('');
+
   const handleChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTermosBusca(e.target.value);
   }
 
+  const handleSlice = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const valor = parseInt(e.target.value, 10);
+    if (!isNaN(valor)) {
+      setSlice(valor);
+    }
+  }
 
 
+  const pythDistance = (lat1: number, lon1: number, lat2: number, lon2: number) =>  {
+    const R = 6371e3;
+    const x = (lon2-lon1) * Math.cos((lat1+lat2)/2);
+    const y = (lat2-lat1);
+    const d = Math.sqrt(x*x + y*y) * R;
+    return d;
+  }
+
+  
   return (
   <ChakraProvider>
   <section className="container">
@@ -38,11 +54,21 @@ function App() {
           placeholder="Coloque o nome da linha: "
         />
       </div>
+      <div className="buscaCampo">
+      <h1>Busca por quantidade</h1>
+        <input
+          type="number"
+          value={slice}
+          onChange={handleSlice}
+          placeholder="Coloque o nome da linha: "
+        />
+      </div>
     </div>
 
         <div className="card-grid2">
         <MapContainer center={[0, 0]} zoom={1}>
             <MapSaver setMap={setMap} /> 
+            
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
             {nameData?.map((item, index) =>
               <Marker key={index} position={[item.py, item.px]}>
@@ -50,10 +76,18 @@ function App() {
                 {item.np}
                 </Popup>
               </Marker>
+
             )}
-        <MarkerClusterGroup maxClusterRadius={20} zoomToBoundsOnClick={false} showCoverageOnHover={false}>
-            {dataHour?.l?.slice(0, 30).map((item) =>
-              item?.vs?.map((veiculo, veiculoIndex) => (
+            {nameData?.map((item, index) =>
+              <Circle
+                center={[nameData[index].py, nameData[index].px]}
+                radius={pythDistance(nameData[index].py, nameData[index].px, nameData[index].py, nameData[index].px)}
+                pathOptions={{ color: 'red', fillColor: '#f03', fillOpacity: 0.1 }}
+              />
+            )}
+        
+            {dataHour?.l?.slice(0, slice).map((item) =>
+              item?.vs?.slice(0, 1).map((veiculo, veiculoIndex) => (    
                 <Marker
                   key={veiculoIndex}
                   position={[veiculo.py, veiculo.px]}
@@ -64,10 +98,9 @@ function App() {
                 >
                   <Popup>{item.c}</Popup>
                 </Marker>
+                
               ))
             )}
-        </MarkerClusterGroup>
-
             
         </MapContainer>
         
