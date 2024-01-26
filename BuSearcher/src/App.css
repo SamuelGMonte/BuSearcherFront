@@ -1,0 +1,62 @@
+.container {
+  height: 100%;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+}
+
+.card {
+  position: relative;
+  border: solid 3px black;
+  width: 1000px;
+  background-color: antiquewhite;
+  border-radius: 10px;
+  transition: background-color 0.3s linear;
+}
+
+
+.card-grid2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.card:hover {
+  background-color: rgb(255, 255, 255);
+}
+
+.container button:hover {
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 7px 0px;
+  transform: scale(1.1);
+}
+
+.busca {
+  display: flex;
+  margin: 2px;
+}
+
+.buscaCampo {
+  text-align: center;
+  border: 1px solid #000;
+  padding: 10px;
+  flex: 1;
+}
+
+.buscaCampo h1 {
+  font-size: 30px;
+}
+
+.buscaCampo input {
+  font-size: 25px;
+  text-align: center;
+}
+
+
+.leaflet-container {
+  border: 1px solid black;
+  height: 600px;
+  width: 600px;
+}
