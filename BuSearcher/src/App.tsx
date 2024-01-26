@@ -31,13 +31,6 @@ function App() {
   }
 
 
-  const pythDistance = (lat1: number, lon1: number, lat2: number, lon2: number) =>  {
-    const R = 6371e3;
-    const x = (lon2-lon1) * Math.cos((lat1+lat2)/2);
-    const y = (lat2-lat1);
-    const d = Math.sqrt(x*x + y*y) * R;
-    return d;
-  }
 
   
   return (
@@ -78,13 +71,7 @@ function App() {
               </Marker>
 
             )}
-            {nameData?.map((item, index) =>
-              <Circle
-                center={[nameData[index].py, nameData[index].px]}
-                radius={pythDistance(nameData[index].py, nameData[index].px, nameData[index].py, nameData[index].px)}
-                pathOptions={{ color: 'red', fillColor: '#f03', fillOpacity: 0.1 }}
-              />
-            )}
+          
         
             {dataHour?.l?.slice(0, slice).map((item) =>
               item?.vs?.slice(0, 1).map((veiculo, veiculoIndex) => (    
