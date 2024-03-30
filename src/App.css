@@ -16,8 +16,9 @@ body {
 }
 
 .leaflet-container {
-  height: clamp(300px, 600px, 100vh) !important;
+  height: clamp(300px, 100vh, 100vh) !important;
   width: clamp(300px, 100vw, 100vw) !important;
+  border: 1px solid black;
 }
 
 
@@ -51,11 +52,4 @@ body {
   font-size: 25px;
   border: 0.5px solid black;
   text-align: center;
-}
-
-
-.leaflet-container {
-  border: 1px solid black;
-  height: 600px;
-  width: 600px;
 }
