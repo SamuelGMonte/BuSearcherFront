@@ -7,15 +7,6 @@ body {
   margin: 0;
 }
 
-.card {
-  position: relative;
-  border: solid 3px black;
-  width: 1000px;
-  background-color: antiquewhite;
-  border-radius: 10px;
-  transition: background-color 0.3s linear;
-}
-
 
 .card-grid2 {
   display: flex;
@@ -23,6 +14,12 @@ body {
   align-items: center;
   flex-direction: column;
 }
+
+.leaflet-container {
+  height: clamp(300px, 600px, 100vh) !important;
+  width: clamp(300px, 100vw, 100vw) !important;
+}
+
 
 .card:hover {
   background-color: rgb(255, 255, 255);
@@ -35,7 +32,8 @@ body {
 
 .busca {
   display: flex;
-  margin: 2px;
+  flex-wrap: wrap;
+  margin: 0px;
 }
 
 .buscaCampo {
@@ -51,6 +49,7 @@ body {
 
 .buscaCampo input {
   font-size: 25px;
+  border: 0.5px solid black;
   text-align: center;
 }
 

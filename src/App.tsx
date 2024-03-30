@@ -14,7 +14,7 @@ import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 
 function App() {
   const [termosBusca, setTermosBusca] = useState('');
-  const [slice, setSlice] = useState(0)
+  const [slice, setSlice] = useState('')
   const { data: nameData, isLoading: nameIsLoading, isError: nameIsError, error: nameError} = useApiDataName(termosBusca);
   const { data: dataHour } = useApiDataNameHour();
   const [map, setMap] = useState('');
@@ -24,8 +24,8 @@ function App() {
   }
 
   const handleSlice = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const valor = parseInt(e.target.value, 10);
-    if (!isNaN(valor)) {
+    const valor = e.target.value;
+    if (!isNaN(parseInt(valor))) {
       setSlice(valor);
     }
   }
@@ -51,17 +51,16 @@ function App() {
       <h1>Busca por quantidade</h1>
         <input
           type="number"
-          value={slice}
           onChange={handleSlice}
-          placeholder="Coloque o nome da linha: "
+          pattern="[^a-zA-Z0-9]*"
+          placeholder="Coloque o número de ônibus: "
         />
       </div>
     </div>
 
         <div className="card-grid2">
-        <MapContainer center={[0, 0]} zoom={1}>
+        <MapContainer center={[-23.54, -46.64]} zoom={12.89}>
             <MapSaver setMap={setMap} /> 
-            
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
             {nameData?.map((item, index) =>
               <Marker key={index} position={[item.py, item.px]}>
@@ -72,7 +71,7 @@ function App() {
 
             )}
           
-        
+              
             {dataHour?.l?.slice(0, slice).map((item) =>
               item?.vs?.slice(0, 1).map((veiculo, veiculoIndex) => (    
                 <Marker
@@ -111,8 +110,6 @@ function App() {
         ) : null}
         
       </div>
-
-          <h1>Mapa</h1>
       </section>
   
      

@@ -1,0 +1,16 @@
+.card {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    padding: 10px;
+    border: solid 1px black;
+    width: clamp(300px, 100%, 100vw);
+    background-color: rgba(223, 208, 190, 0.582);
+    border-radius: 5px;
+    transition: background-color 0.3s linear;
+  }
+
+.card:hover {
+    transition: 0.5;
+    background-color: rgb(178, 178, 216);
+}

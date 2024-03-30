@@ -3,6 +3,10 @@ import { LinhaParada } from "../../components/cardParada/cardApiParada";
 const API_URL = 'http://localhost:8080/parada';
 
 const fetchDataName = async (termosBusca: string): Promise<LinhaParada[]> => {
+    if (!termosBusca) {
+        return [];    
+    }
+    
     const response = await fetch(API_URL + `?param=${termosBusca}`, {
         headers: {
             "Content-Type": "application/json",
@@ -16,6 +20,7 @@ const fetchDataName = async (termosBusca: string): Promise<LinhaParada[]> => {
     catch(error: any) {
         throw new Error(`Error while fetching data: ${error.message}`);
     }
+
     const data = await response.json();
     
     const coordData = data.map((item: any) => ({
@@ -29,6 +34,7 @@ const fetchDataName = async (termosBusca: string): Promise<LinhaParada[]> => {
 }
 
 export function useApiDataName(termosBusca: string) {
+
     const query = useQuery(['api-data-name', termosBusca], {
         queryFn: () => fetchDataName(termosBusca),
         retry: 2,
