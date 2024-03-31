@@ -1,22 +1,22 @@
-import { useEffect, useState, useRef } from 'react'
+import {useState, useRef } from 'react'
 import './App.css'
 import React from 'react';
-import { ChakraProvider, position } from '@chakra-ui/react'
-import { CardApiParada, LinhaParada } from './components/cardParada/cardApiParada.tsx'
+import { ChakraProvider } from '@chakra-ui/react'
+import { CardApiParada } from './components/cardParada/cardApiParada.tsx'
 import 'leaflet/dist/leaflet.css';
 import { useApiDataName } from './hooks/nomeParadaRequest/useApiDataName.ts'
-import { MapContainer, TileLayer, Marker, Popup, Circle } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import { MapSaver } from './hooks/MapSaver.tsx';
-import { useApiDataNameHour } from './hooks/horaOnibusRequest/useApiHour.ts'
+import { useApiDataQtd } from './hooks/horaOnibusRequest/useApiQtd.ts'
 import * as L from 'leaflet';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 
 function App() {
   const [termosBusca, setTermosBusca] = useState('');
-  const [slice, setSlice] = useState('')
+  const [sliceVar, setSlice] = useState(0)
   const { data: nameData, isLoading: nameIsLoading, isError: nameIsError, error: nameError} = useApiDataName(termosBusca);
-  const { data: dataHour } = useApiDataNameHour();
+  const { data: dataHour } = useApiDataQtd();
   const [map, setMap] = useState('');
 
   const handleChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -24,15 +24,13 @@ function App() {
   }
 
   const handleSlice = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const valor = e.target.value;
-    if (!isNaN(parseInt(valor))) {
+    setSlice(0)
+    const valor = parseInt(e.target.value);
+    if (!isNaN(valor)) {
       setSlice(valor);
     }
   }
 
-
-
-  
   return (
   <ChakraProvider>
   <section className="container">
@@ -72,8 +70,8 @@ function App() {
             )}
           
               
-            {dataHour?.l?.slice(0, slice).map((item) =>
-              item?.vs?.slice(0, 1).map((veiculo, veiculoIndex) => (    
+            {dataHour?.l?.slice(0, sliceVar).map((item) =>
+              item?.vs?.slice().map((veiculo, veiculoIndex) => (    
                 <Marker
                   key={veiculoIndex}
                   position={[veiculo.py, veiculo.px]}

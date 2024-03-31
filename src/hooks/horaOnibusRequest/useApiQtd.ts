@@ -1,5 +1,5 @@
 import { useQuery } from 'react-query';
-import { ApiResponse, VeiculoStatus } from '../../components/cardHour/cardApiHour';
+import { ApiResponse, VeiculoStatus } from '../../components/cardQtd/cardApiQtd';
 import { useEffect, useState } from 'react';
 
 const API_URL = 'http://localhost:8080/posicao';
@@ -28,7 +28,7 @@ const fetchDataName = async (): Promise<ApiResponse> => {
 };
 
 
-export function useApiDataNameHour() {
+export function useApiDataQtd() {
     const [forceUpdate, setForceUpdate] = useState(false);
     
     const query = useQuery('api-data-name', {
