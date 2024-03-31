@@ -1,7 +1,5 @@
-import { useMap } from 'react-leaflet';
-
 export function useZoom() {
-  return (map) => (px, py) => {
+  return (map: any) => (px: any, py: any) => {
    map.flyTo([py, px], 18);
   };
  }
