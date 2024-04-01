@@ -1,6 +1,6 @@
 import { LinhaData } from "../../components/LinhaData";
 import { useQuery } from 'react-query'; 
-const API_URL = 'http://localhost:8080/linhas';
+const API_URL = 'https://busearcher.rj.r.appspot.com';
 
 
 const fetchDataNumber = async (param: number): Promise<LinhaData[]> => {

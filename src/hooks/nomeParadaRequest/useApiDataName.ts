@@ -1,6 +1,6 @@
 import { useQuery } from 'react-query'; 
 import { LinhaParada } from "../../components/cardParada/cardApiParada";
-const API_URL = 'http://localhost:8080/parada';
+const API_URL = 'https://busearcher.rj.r.appspot.com/parada';
 
 const fetchDataName = async (termosBusca: string): Promise<LinhaParada[]> => {
     if (!termosBusca) {
