@@ -11,16 +11,28 @@ import { useApiDataQtd } from './hooks/horaOnibusRequest/useApiQtd.ts'
 import * as L from 'leaflet';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
+import markIcon from './assets/map-icon.svg' 
+
+const myIcon = L.icon({
+  iconUrl: markIcon,
+  iconSize: [22, 22],
+});
 
 function App() {
-  const [termosBusca, setTermosBusca] = useState('');
+  const [termosBusca, setTermosBusca] = useState<string | undefined>();
   const [sliceVar, setSlice] = useState(0)
   const { data: nameData, isLoading: nameIsLoading, isError: nameIsError, error: nameError} = useApiDataName(termosBusca);
   const { data: dataHour } = useApiDataQtd();
   const [map, setMap] = useState('');
+  
+
 
   const handleChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTermosBusca(e.target.value);
+    setTermosBusca(undefined);
+    const valorStr = e.target.value;
+    if (valorStr !== '') {
+      setTermosBusca(valorStr);
+    } 
   }
 
   const handleSlice = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,7 +52,6 @@ function App() {
       <h1>Busca por nome</h1>
         <input
           type="text"
-          value={termosBusca}
           onChange={handleChangeName}
           placeholder="Coloque o nome da linha: "
         />
@@ -61,7 +72,7 @@ function App() {
             <MapSaver setMap={setMap} /> 
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
             {nameData?.map((item, index) =>
-              <Marker key={index} position={[item.py, item.px]}>
+              <Marker key={index} position={[item.py, item.px]} icon={myIcon}>
                 <Popup>
                 {item.np}
                 </Popup>

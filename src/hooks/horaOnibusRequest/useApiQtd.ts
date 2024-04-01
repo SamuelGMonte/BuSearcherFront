@@ -2,7 +2,7 @@ import { useQuery } from 'react-query';
 import { ApiResponse, VeiculoStatus } from '../../components/cardQtd/cardApiQtd';
 import { useEffect, useState } from 'react';
 
-const API_URL = 'http://localhost:8080/posicao';
+const API_URL = 'https://busearcher.rj.r.appspot.com/posicao';
 
 const smoothValue = (currentValue: number, targetValue: number, smoothing = 0.1) => {
     return currentValue + (targetValue - currentValue) * smoothing;

@@ -3,10 +3,7 @@ import { LinhaParada } from "../../components/cardParada/cardApiParada";
 const API_URL = 'https://busearcher.rj.r.appspot.com/parada';
 
 const fetchDataName = async (termosBusca: string): Promise<LinhaParada[]> => {
-    if (!termosBusca) {
-        return [];    
-    }
-    
+   
     const response = await fetch(API_URL + `?param=${termosBusca}`, {
         headers: {
             "Content-Type": "application/json",
